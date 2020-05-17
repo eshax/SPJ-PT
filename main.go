@@ -81,10 +81,7 @@ func show() {
 	for {
 		select {
 		case e := <-uiEvents:
-			// print(e.ID)
 			switch e.ID {
-			// case "q", "<C-c>":
-			// 	return
 			case "<Enter>":
 				n, err := strconv.Atoi(cmd)
 				if err != nil {
@@ -104,7 +101,6 @@ func show() {
 				}
 			}
 		case <-ticker:
-			// print(time.Now().String())
 			draw()
 		}
 	}
@@ -161,15 +157,15 @@ func sent(n int) {
 	title := ""
 	if n == 1 {
 		message = "040001"
-		title = " 上位机 发送 [初始化] 指令"
+		title = "   上位机 发送 [初始化] 指令"
 	}
 	if n == 2 {
 		message = "040002"
-		title = " 上位机 发送 [复位/暂停] 指令"
+		title = "   上位机 发送 [复位/暂停] 指令"
 	}
 	if n == 3 {
 		message = "040003"
-		title = " 上位机 发送 [获取片盒状态] 指令"
+		title = "   上位机 发送 [获取片盒状态] 指令"
 	}
 	if n > 400 && n < 461 {
 		message = "050004"
@@ -183,15 +179,15 @@ func sent(n int) {
 	}
 	if n == 5 {
 		message = "040005"
-		title = " 上位机 发送 [还片] 指令"
+		title = "   上位机 发送 [还片] 指令"
 	}
 	if n == 6 {
 		message = "040006"
-		title = " 上位机 发送 [获取当前片盒] 指令"
+		title = "   上位机 发送 [获取当前片盒] 指令"
 	}
 	if n == 7 {
 		message = "040007"
-		title = " 上位机 发送 [切换片盒] 指令"
+		title = "   上位机 发送 [切换片盒] 指令"
 	}
 	if len(message) > 0 {
 		data, _ := hex.DecodeString(message)
@@ -232,11 +228,6 @@ func receiver(s io.ReadWriteCloser) {
 	}
 }
 
-func hexformat(buf []byte) string {
-	s := hex.EncodeToString(buf)
-	return s
-}
-
 func parse(s string) string {
 	d, _ := hex.DecodeString(s)
 	msg := ""
@@ -268,6 +259,18 @@ func parse(s string) string {
 	if d[4] == 0x03 {
 		if d[5] == 0x00 {
 			msg += " 执行 [获取片盒状态] 操作成功"
+			msg += "\n"
+			msg += bin_string(int(d[7]))
+			msg += bin_string(int(d[6]))
+			msg += " "
+			msg += bin_string(int(d[9]))
+			msg += bin_string(int(d[8]))
+			msg += " "
+			msg += bin_string(int(d[11]))
+			msg += bin_string(int(d[10]))
+			msg += " "
+			msg += bin_string(int(d[13]))
+			msg += bin_string(int(d[12]))
 		}
 		if d[5] == 0x01 {
 			msg += " 执行 [获取片盒状态] 操作失败"
@@ -334,8 +337,7 @@ func unpack(s string) string {
 	s = strings.TrimSpace(s)
 	data := strings.Split(s, " ")
 	s = ""
-	i := 0
-	for i < len(data) {
+	for i := 0; i < len(data); i++ {
 		if check(data[i]) {
 			print("<<<< " + data[i] + " " + parse(data[i]))
 		} else {
@@ -343,36 +345,28 @@ func unpack(s string) string {
 				s = data[i]
 			}
 		}
-		i++
 	}
 	return s
 }
 
 func check(s string) bool {
 	if strings.Index(s, "90EB") == 0 && len(s) > 8 {
-		buf, _ := hex.DecodeString(s[4 : len(s)-4])
-		crc := CRC16_IBM(buf, 4)
-		crc_string := hex.EncodeToString(IntToBytes(crc))
-		crc_string = strings.ToUpper(crc_string)
-		if strings.Contains(crc_string, s[len(s)-4:]) {
+		message := s[4 : len(s)-4]
+		buf, _ := hex.DecodeString(message)
+		x := CRC16_IBM(buf, len(buf))
+		crc := hex.EncodeToString(IntToBytes(x))
+		crc = strings.ToUpper(crc)
+		if strings.Contains(crc, s[len(s)-4:]) {
 			return true
 		}
 	}
 	return false
 }
 
-func IntToBytes(n int) []byte {
-	x := int16(n)
-	bytesBuffer := bytes.NewBuffer([]byte{})
-	binary.Write(bytesBuffer, binary.BigEndian, x)
-	return bytesBuffer.Bytes()
-}
-
 func CRC16_IBM(data []byte, datalen int) int {
 	wCRCin := 0x0000
 	wCPoly := 0xA001
-	n := 0
-	for n < datalen {
+	for n := 0; n < datalen; n++ {
 		wCRCin = wCRCin ^ int(data[n])
 		for i := 0; i < 8; i++ {
 			if wCRCin&0x01 > 0 {
@@ -381,9 +375,15 @@ func CRC16_IBM(data []byte, datalen int) int {
 				wCRCin = wCRCin >> 1
 			}
 		}
-		n++
 	}
 	return wCRCin<<8 | wCRCin>>8
+}
+
+func IntToBytes(n int) []byte {
+	x := int16(n)
+	bytesBuffer := bytes.NewBuffer([]byte{})
+	binary.Write(bytesBuffer, binary.BigEndian, x)
+	return bytesBuffer.Bytes()
 }
 
 func push_cmd(s string) {
@@ -397,10 +397,24 @@ func pop_cmd() {
 }
 
 func print(s string) {
-	queue = append(queue, time.Now().Format("2006-01-02 15:04:05")+" : "+s)
+	data := strings.Split(s, "\n")
+	for i := 0; i < len(data); i++ {
+		if len(data[i]) > 0 {
+			queue = append(queue, time.Now().Format("2006-01-02 15:04:05")+" : "+data[i])
+		}
+	}
+
 	if len(queue) > 19 {
 		queue = queue[1:]
 	}
+}
+
+func bin_string(x int) string {
+	s := strconv.FormatInt(int64(x), 2)
+	for len(s) < 8 {
+		s = "0" + s
+	}
+	return s
 }
 
 func main() {
