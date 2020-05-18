@@ -259,18 +259,34 @@ func parse(s string) string {
 	if d[4] == 0x03 {
 		if d[5] == 0x00 {
 			msg += " 执行 [获取片盒状态] 操作成功"
-			msg += "\n"
-			msg += bin_string(int(d[7]))
-			msg += bin_string(int(d[6]))
-			msg += " "
-			msg += bin_string(int(d[9]))
-			msg += bin_string(int(d[8]))
-			msg += " "
-			msg += bin_string(int(d[11]))
-			msg += bin_string(int(d[10]))
-			msg += " "
-			msg += bin_string(int(d[13]))
-			msg += bin_string(int(d[12]))
+			if len(d) > 9 {
+				msg += "\n"
+				msg += bin_string(int(d[7])) + " "
+				msg += bin_string(int(d[6])) + " "
+				msg += bin_string(int(d[9])) + " "
+				msg += bin_string(int(d[8])) + " "
+			}
+			if len(d) > 13 {
+				msg += "\n"
+				msg += bin_string(int(d[11])) + " "
+				msg += bin_string(int(d[10])) + " "
+				msg += bin_string(int(d[13])) + " "
+				msg += bin_string(int(d[12])) + " "
+			}
+			if len(d) > 17 {
+				msg += "\n"
+				msg += bin_string(int(d[15])) + " "
+				msg += bin_string(int(d[14])) + " "
+				msg += bin_string(int(d[17])) + " "
+				msg += bin_string(int(d[16])) + " "
+			}
+			if len(d) > 21 {
+				msg += "\n"
+				msg += bin_string(int(d[19])) + " "
+				msg += bin_string(int(d[18])) + " "
+				msg += bin_string(int(d[21])) + " "
+				msg += bin_string(int(d[20])) + " "
+			}
 		}
 		if d[5] == 0x01 {
 			msg += " 执行 [获取片盒状态] 操作失败"
@@ -404,7 +420,7 @@ func print(s string) {
 		}
 	}
 
-	if len(queue) > 19 {
+	for len(queue) > 19 {
 		queue = queue[1:]
 	}
 }
