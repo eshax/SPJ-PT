@@ -260,32 +260,32 @@ func parse(s string) string {
 		if d[5] == 0x00 {
 			msg += " 执行 [获取片盒状态] 操作成功"
 			if len(d) > 9 {
-				msg += "\n"
+				msg += "\n底 "
 				msg += bin_string(int(d[9])) + " "
 				msg += bin_string(int(d[8])) + " "
 				msg += bin_string(int(d[7])) + " "
-				msg += bin_string(int(d[6])) + " "
+				msg += bin_string(int(d[6])) + " 顶"
 			}
 			if len(d) > 13 {
-				msg += "\n"
+				msg += "\n底 "
 				msg += bin_string(int(d[13])) + " "
 				msg += bin_string(int(d[12])) + " "
 				msg += bin_string(int(d[11])) + " "
-				msg += bin_string(int(d[10])) + " "
+				msg += bin_string(int(d[10])) + " 顶"
 			}
 			if len(d) > 17 {
-				msg += "\n"
+				msg += "\n底 "
 				msg += bin_string(int(d[17])) + " "
 				msg += bin_string(int(d[16])) + " "
 				msg += bin_string(int(d[15])) + " "
-				msg += bin_string(int(d[14])) + " "
+				msg += bin_string(int(d[14])) + " 顶"
 			}
 			if len(d) > 21 {
-				msg += "\n"
+				msg += "\n底 "
 				msg += bin_string(int(d[21])) + " "
 				msg += bin_string(int(d[20])) + " "
 				msg += bin_string(int(d[19])) + " "
-				msg += bin_string(int(d[18])) + " "
+				msg += bin_string(int(d[18])) + " 顶"
 			}
 		}
 		if d[5] == 0x01 {
