@@ -260,32 +260,60 @@ func parse(s string) string {
 		if d[5] == 0x00 {
 			msg += " 执行 [获取片盒状态] 操作成功"
 			if len(d) > 9 {
-				msg += "\n底 "
+				msg += "\n 001 - 030  底 "
 				msg += bin_string(int(d[9])) + " "
 				msg += bin_string(int(d[8])) + " "
 				msg += bin_string(int(d[7])) + " "
 				msg += bin_string(int(d[6])) + " 顶"
 			}
 			if len(d) > 13 {
-				msg += "\n底 "
+				msg += "\n 031 - 060  底 "
 				msg += bin_string(int(d[13])) + " "
 				msg += bin_string(int(d[12])) + " "
 				msg += bin_string(int(d[11])) + " "
 				msg += bin_string(int(d[10])) + " 顶"
 			}
 			if len(d) > 17 {
-				msg += "\n底 "
+				msg += "\n 061 - 090  底 "
 				msg += bin_string(int(d[17])) + " "
 				msg += bin_string(int(d[16])) + " "
 				msg += bin_string(int(d[15])) + " "
 				msg += bin_string(int(d[14])) + " 顶"
 			}
 			if len(d) > 21 {
-				msg += "\n底 "
+				msg += "\n 091 - 120  底 "
 				msg += bin_string(int(d[21])) + " "
 				msg += bin_string(int(d[20])) + " "
 				msg += bin_string(int(d[19])) + " "
 				msg += bin_string(int(d[18])) + " 顶"
+			}
+			if len(d) > 25 {
+				msg += "\n 121 - 150  底 "
+				msg += bin_string(int(d[25])) + " "
+				msg += bin_string(int(d[24])) + " "
+				msg += bin_string(int(d[23])) + " "
+				msg += bin_string(int(d[22])) + " 顶"
+			}
+			if len(d) > 29 {
+				msg += "\n 151 - 180  底 "
+				msg += bin_string(int(d[29])) + " "
+				msg += bin_string(int(d[28])) + " "
+				msg += bin_string(int(d[27])) + " "
+				msg += bin_string(int(d[26])) + " 顶"
+			}
+			if len(d) > 33 {
+				msg += "\n 181 - 210  底 "
+				msg += bin_string(int(d[33])) + " "
+				msg += bin_string(int(d[32])) + " "
+				msg += bin_string(int(d[31])) + " "
+				msg += bin_string(int(d[30])) + " 顶"
+			}
+			if len(d) > 37 {
+				msg += "\n 211 - 240  底 "
+				msg += bin_string(int(d[37])) + " "
+				msg += bin_string(int(d[36])) + " "
+				msg += bin_string(int(d[35])) + " "
+				msg += bin_string(int(d[34])) + " 顶"
 			}
 		}
 		if d[5] == 0x01 {
@@ -428,11 +456,17 @@ func print(s string) {
 func bin_string(x int) string {
 	s := strconv.FormatInt(int64(x), 2)
 	for len(s) < 8 {
-		s = "0" + s
+		s = "-" + s
 	}
-	ss := ""
+	ss := " "
 	for i := 0; i < len(s); i++ {
-		ss += s[i:i+1] + " "
+		o := s[i : i+1]
+		if o == "1" {
+			o = "*"
+		} else {
+			o = "-"
+		}
+		ss += o + " "
 	}
 	return ss
 }
