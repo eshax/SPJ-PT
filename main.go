@@ -44,7 +44,7 @@ func show() {
 
 	p0 := widgets.NewParagraph()
 	p0.Title = "送片机协议调试"
-	p0.Text = "[1]:初始化 [2]:复位/暂停 [3]:片盒状态 [401-460]:取片 [5]:还片 [6]:当前片盒 [7]:切换片盒"
+	p0.Text = "[1]:初始化 [2]:复位/暂停 [3]:片盒状态 [4001-4240]:取片 [5]:还片 [6]:当前片盒 [7]:切换片盒"
 	p0.SetRect(0, 0, 120, 3)
 	p0.TextStyle.Fg = ui.ColorWhite
 	p0.BorderStyle.Fg = ui.ColorCyan
@@ -167,9 +167,9 @@ func sent(n int) {
 		message = "040003"
 		title = "   上位机 发送 [获取片盒状态] 指令"
 	}
-	if n > 400 && n < 461 {
+	if n >= 4001 && n <= 4240 {
 		message = "050004"
-		x := n - 400
+		x := n - 4000
 		m := strconv.FormatInt(int64(x), 16)
 		if len(m) == 1 {
 			m = "0" + m
