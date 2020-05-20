@@ -430,7 +430,11 @@ func bin_string(x int) string {
 	for len(s) < 8 {
 		s = "0" + s
 	}
-	return s
+	ss := ""
+	for i := 0; i < len(s); i++ {
+		ss += s[i:i+1] + " "
+	}
+	return ss
 }
 
 func main() {
