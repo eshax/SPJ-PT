@@ -244,6 +244,9 @@ func parse(s string) string {
 		if d[5] == 0x02 {
 			msg += " 收到 [初始化] 指令"
 		}
+		if d[5] == 0x03 {
+			msg += " 执行 [初始化] 指令时 设备忙"
+		}
 	}
 	if d[4] == 0x02 {
 		if d[5] == 0x00 {
@@ -254,6 +257,9 @@ func parse(s string) string {
 		}
 		if d[5] == 0x02 {
 			msg += " 收到 [复位/暂停] 指令"
+		}
+		if d[5] == 0x03 {
+			msg += " 执行 [复位/暂停] 指令时 设备忙"
 		}
 	}
 	if d[4] == 0x03 {
@@ -294,6 +300,9 @@ func parse(s string) string {
 		if d[5] == 0x02 {
 			msg += " 收到 [获取片盒状态] 指令"
 		}
+		if d[5] == 0x03 {
+			msg += " 执行 [获取片盒状态] 指令时 设备忙"
+		}
 	}
 	if d[4] == 0x04 {
 		if d[5] == 0x00 {
@@ -304,6 +313,9 @@ func parse(s string) string {
 		}
 		if d[5] == 0x02 {
 			msg += " 收到 [取片] 指令"
+		}
+		if d[5] == 0x03 {
+			msg += " 执行 [取片] 指令时 设备忙"
 		}
 	}
 	if d[4] == 0x05 {
@@ -316,6 +328,9 @@ func parse(s string) string {
 		if d[5] == 0x02 {
 			msg += " 收到 [还片] 指令"
 		}
+		if d[5] == 0x03 {
+			msg += " 执行 [还片] 指令时 设备忙"
+		}
 	}
 	if d[4] == 0x06 {
 		if d[5] == 0x00 {
@@ -327,6 +342,9 @@ func parse(s string) string {
 		if d[5] == 0x02 {
 			msg += " 收到 [获取当前片盒] 指令"
 		}
+		if d[5] == 0x03 {
+			msg += " 执行 [获取当前片盒] 指令时 设备忙"
+		}
 	}
 	if d[4] == 0x07 {
 		if d[5] == 0x00 {
@@ -337,6 +355,9 @@ func parse(s string) string {
 		}
 		if d[5] == 0x02 {
 			msg += " 收到 [切换片盒] 指令"
+		}
+		if d[5] == 0x03 {
+			msg += " 执行 [切换片盒] 指令时 设备忙"
 		}
 	}
 	return msg
