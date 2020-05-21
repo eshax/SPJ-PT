@@ -244,6 +244,7 @@ func parse(s string) string {
 		if d[5] == 0x02 {
 			msg += " 收到 [初始化] 指令"
 		}
+		// 90 eb 05 01 01 03 10 9D
 		if d[5] == 0x03 {
 			msg += " 执行 [初始化] 指令时 设备忙"
 		}
@@ -262,7 +263,9 @@ func parse(s string) string {
 			msg += " 执行 [复位/暂停] 指令时 设备忙"
 		}
 	}
+
 	if d[4] == 0x03 {
+		// 90 eb 15 01 03 00 ff 7f ff 7f ff 7f ff 7f 07 01 80 78 00 00 00 00 9b c3
 		if d[5] == 0x00 {
 			msg += " 执行 [获取片盒状态] 操作成功"
 			if len(d) > 9 {
